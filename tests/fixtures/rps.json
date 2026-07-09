@@ -1,0 +1,2 @@
+{"nodes": ["Rock", "Paper", "Scissors"],
+ "matrix": [[0, -1, 1], [1, 0, -1], [-1, 1, 0]]}
