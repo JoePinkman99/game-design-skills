@@ -1,5 +1,6 @@
 # Game Design Skills for Claude Code
 
+
 Two [Claude Code](https://claude.com/claude-code) skills that turn a chat into
 a game-design lab:
 
@@ -15,6 +16,15 @@ a game-design lab:
 Together they form a loop: **analyze → redesign → verify the math → re-audit
 blind.**
 
+```mermaid
+flowchart LR
+    A["your game\n(title, GDD, rules, code)"] -->|game-analysis| B["audit\ntypology · fun engines · findings"]
+    B -->|game-redesign| C["proposal portfolio\neach one math-verified"]
+    C --> D["handoff spec\nself-contained rules"]
+    D -->|"fresh session, blind"| E["independent re-audit"]
+    E -. "confirms the math,\nfinds what the designer missed" .-> C
+```
+
 ## Why this isn't just a fancy prompt
 
 Both skills route load-bearing balance claims through
@@ -28,7 +38,38 @@ suite included) that actually computes:
 - eigenvector-centrality viability scores
 
 So when a report says *"no dominated nodes"* or *"the 2-Paradox property
-holds,"* that's a computed result you can re-run yourself — see `examples/`.
+holds,"* that's a computed result you can re-run yourself — see
+[`examples/`](examples/). Here's the entire engine's output on classic RPS:
+
+```
+$ python3 game-analysis/scripts/matrix_analysis.py tests/fixtures/rps.json
+
+Mode: binary | Nodes: 3 (Rock, Paper, Scissors)
+
+== STRUCTURE ==
+Tournament: yes (tournament = every matchup has a winner)
+INTRANSITIVE (cycle exists). Example cycle: Rock -> Scissors -> Paper -> Rock
+3-cycles: 1
+
+== DOMINATED NODES ==
+Dominated nodes: none
+
+== DOOM-STACKS (unbeatable subsets) ==
+3 unbeatable subset(s) of size 2 — 2-Paradox property does NOT hold:
+  ('Rock', 'Paper')
+  ('Rock', 'Scissors')
+  ('Paper', 'Scissors')
+
+== VIABILITY (eigenvector centrality, steady-state heuristic) ==
+  Paper: 0.3333
+  Rock: 0.3333
+  Scissors: 0.3333
+```
+
+That last section is why 3-sign RPS can never have a safe two-sign strategy —
+and why the redesign skill's 7-sign expansion (see
+[`examples/rock-paper-scissors/`](examples/rock-paper-scissors/)) is built on
+the mathematically minimal graph where every pair *does* have a counter.
 
 The skills are also disciplined about **matrix-before-narrative**: any claim
 that leans on space, tempo, or hidden information has to say so explicitly,
@@ -87,6 +128,17 @@ propose redesigns for the game in my-game-design.md
   design session missed.
 - **`tetris/`** — a single audit of a game with no interaction matrix at
   all, to show the skill correctly refuses to force one where none exists.
+
+## Swap in your own theory
+
+The knowledge base is deliberately modular. The files in
+`game-analysis/references/` marked *"Claude-authored fill-in — replaceable by
+curated content"* are exactly that: replace `fun-engines.md` or
+`systemic-levers.md` (or `game-redesign/references/design-moves.md`) with
+your own design-theory notes, update the one routing line in the relevant
+SKILL.md, and the whole pipeline reasons from *your* framework instead —
+with the same computational discipline underneath. If you fork this with a
+different theory spine, I'd genuinely like to see it.
 
 ## Honest limits
 
