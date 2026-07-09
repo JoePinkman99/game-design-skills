@@ -1,5 +1,7 @@
 # Game Design Skills for Claude Code
 
+[![tests](https://github.com/apetrovCode/game-design-skills/actions/workflows/tests.yml/badge.svg)](https://github.com/apetrovCode/game-design-skills/actions/workflows/tests.yml)
+
 
 Two [Claude Code](https://claude.com/claude-code) skills that turn a chat into
 a game-design lab:
